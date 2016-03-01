@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
 using Dlp.Framework;
+using InteliTroco.Core.DataContracts;
 
 namespace InteliTroco {
 	public partial class UxFrmInteliTroco : Form {

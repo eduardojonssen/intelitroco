@@ -1,11 +1,13 @@
-﻿using System;
+﻿using InteliTroco.Core.DataContracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InteliTroco.Core.Processors;
 
 namespace InteliTroco.Core {
-	public class InteliTrocoManager {
+	public class InteliTrocoManager {		
 
 		/// <summary>
 		/// Base constructor.
@@ -36,27 +38,28 @@ namespace InteliTroco.Core {
 		public Dictionary<string,Dictionary<int,long>> CountCoins(long amount) {
 
 			Dictionary<string, Dictionary<int, long>> result = new Dictionary<string, Dictionary<int, long>>();
-			ConfigurationUtility configurationUtility = new ConfigurationUtility();
-			List<MonetaryUnit> availableMonetaryUnitList = configurationUtility.AvailableMonetaryUnitList;
+			ConfigurationUtility configurationUtility = new ConfigurationUtility();			
 
 			string[] priorityList = configurationUtility.MonetaryPriorityList;
 
 			foreach (string priorityItem in priorityList) {
 
-				Dictionary<int, long> monetaryUnities = new Dictionary<int, long>();
-				foreach (MonetaryUnit monetaryUnit in configurationUtility.AvailableMonetaryUnitList.Where(x => x.Type == priorityItem).OrderByDescending(we => we.AmountInCents)) {					
+				AbstractProcessor processor = ProcessorFactory.Create(priorityItem);
 
-					long coinQuantity = amount / monetaryUnit.AmountInCents;
-
-					if (coinQuantity <= 0) {
-						continue;
-					}
-
-					monetaryUnities.Add(monetaryUnit.AmountInCents,coinQuantity);
-					amount = amount - (coinQuantity * monetaryUnit.AmountInCents);
+				if (processor == null) {
+					//Fazer alguma coisa
+					break;
 				}
 
-				result.Add(priorityItem, monetaryUnities);
+				Dictionary<int,long> processResult = processor.Process(amount);
+				result.Add(priorityItem, processResult);
+
+				amount -= processResult.Sum(n => n.Key * n.Value);
+
+				if (amount <= 0) {
+					break;
+				}
+
 			}
 
 			return result;

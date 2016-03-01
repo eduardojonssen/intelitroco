@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InteliTroco.Core {
+namespace InteliTroco.Core.DataContracts {
 	public sealed class CalculateRequest : AbstractRequest {
 
 		public CalculateRequest() { }
