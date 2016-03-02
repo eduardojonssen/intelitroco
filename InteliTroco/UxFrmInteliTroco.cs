@@ -11,11 +11,16 @@ using System.Windows.Forms;
 using System.Configuration;
 using Dlp.Framework;
 using InteliTroco.Core.DataContracts;
+using System.Threading;
+using System.Globalization;
 
 namespace InteliTroco {
 	public partial class UxFrmInteliTroco : Form {
 		public UxFrmInteliTroco() {
 			InitializeComponent();
+
+			//Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
+			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
 		}
 
 		private void UxBtnCalculate_Click(object sender, EventArgs e) {
@@ -64,7 +69,7 @@ namespace InteliTroco {
 				return resultString.ToString();
 			}
 
-			resultString.AppendLine(string.Format("Valor total do troco: {0}", result.ChangeAmount));
+			resultString.AppendLine(string.Format("Valor total do troco: {0:0.00}", ((decimal)result.ChangeAmount / 100).ToString("C", new CultureInfo("pt-BR"))));
 
 			foreach (KeyValuePair<string, Dictionary<int, long>> item in result.CoinDictionary) {
 

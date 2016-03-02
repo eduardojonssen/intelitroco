@@ -5,18 +5,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using InteliTroco.Core.Processors;
+using InteliTroco.Core.Logger;
 
 namespace InteliTroco.Core {
-	public class InteliTrocoManager {		
+	public class InteliTrocoManager {
+
+		internal ILogger Logger { get; set; }
 
 		/// <summary>
 		/// Base constructor.
 		/// </summary>
+		
 		public InteliTrocoManager() {
+			Logger = new EventViewerLogger();
 		}
 
 		public CalculateResponse Calculate(CalculateRequest request) {
 			CalculateResponse calculateResponse = new CalculateResponse();
+			
+			Logger.Log(LevelType.info, CategoryType.request, request);
+			
 			try {
 				// Verifica se todos os parâmetros recebidos são válidos.
 				if (request.IsValid == false) {
@@ -27,11 +35,12 @@ namespace InteliTroco.Core {
 				calculateResponse.ChangeAmount = request.PaymentAmount - request.ProductAmount;
 				calculateResponse.CoinDictionary = CountCoins(calculateResponse.ChangeAmount);
 				calculateResponse.Success = true;
-
 			}
 			catch (Exception ex) {
 				calculateResponse.ReportList.Add(new Report { Code = -500, Message = "O troco não pode ser calculado, tente de novo" });
+				Logger.Log(LevelType.error, CategoryType.exception, ex.ToString());
 			}
+			Logger.Log(LevelType.info, CategoryType.response, calculateResponse);
 			return calculateResponse;
 		}
 
