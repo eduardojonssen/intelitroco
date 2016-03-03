@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace InteliTroco.Core.Logger {
-	enum CategoryType {
+	public enum CategoryType {
 		request,
 		response,
 		exception

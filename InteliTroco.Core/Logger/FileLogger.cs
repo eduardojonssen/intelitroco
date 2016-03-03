@@ -10,11 +10,11 @@ using Dlp.Framework;
 
 namespace InteliTroco.Core.Logger {			
 
-	class Logger : ILogger{
+	public class FileLogger : ILogger {
 
 		public string LogFilePath { get; set; }
 
-		public Logger( string logFilePath ) {
+		public FileLogger( string logFilePath ) {
 			this.LogFilePath = logFilePath;
 		}
 

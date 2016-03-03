@@ -12,7 +12,8 @@ namespace InteliTroco.Core.Processors {
 			AbstractProcessor[] processorList = {
 				new BillProcessor(),
 				new CoinProcessor(),
-				new SilverProcessor()
+				new SilverProcessor(),
+				new CandyProcessor()
 				//Adicione novos processadores acima desta linha
 			};
 

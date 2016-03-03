@@ -14,7 +14,7 @@ namespace InteliTroco.Core.DataContracts {
 
 		public Dictionary<string, Dictionary<int, long>> CoinDictionary { get; set; }
 
-		public long ChangeAmount { get; set; }
+		public Nullable<long> ChangeAmount { get; set; }
 
 	}
 }

@@ -8,7 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace InteliTroco.Core.Logger {
-	class EventViewerLogger : ILogger {
+
+	public class EventViewerLogger : ILogger {
 
 		public void Log(LevelType level, CategoryType category, object data) {
 			using (EventLog eventLog = new EventLog("Application")) {

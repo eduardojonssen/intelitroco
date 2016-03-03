@@ -51,6 +51,7 @@
     <Compile Include="DataContracts\CalculateRequest.cs" />
     <Compile Include="DataContracts\CalculateResponse.cs" />
     <Compile Include="ConfigurationUtility.cs" />
+    <Compile Include="Interceptors\LogInterceptor.cs" />
     <Compile Include="Logger\CategoryType.cs" />
     <Compile Include="Logger\EventViewerLogger.cs" />
     <Compile Include="Logger\FileLogger.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="DataContracts\Report.cs" />
     <Compile Include="InteliTrocoManager.cs" />
     <Compile Include="Processors\BillProcessor.cs" />
+    <Compile Include="Processors\CandyProcessor.cs" />
     <Compile Include="Processors\CoinProcessor.cs" />
     <Compile Include="Processors\AbstractProcessor.cs" />
     <Compile Include="Processors\ProcessorFactory.cs" />
