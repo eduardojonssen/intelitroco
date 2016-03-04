@@ -8,6 +8,7 @@ using InteliTroco.Core.Processors;
 using InteliTroco.Core.Logger;
 using Dlp.Framework.Container;
 using InteliTroco.Core.Interceptors;
+using System.Configuration;
 
 namespace InteliTroco.Core {
 	public class InteliTrocoManager {
@@ -30,24 +31,24 @@ namespace InteliTroco.Core {
 
 			CalculateResponse calculateResponse = new CalculateResponse();
 
-			ILogger logger = IocFactory.Resolve<ILogger>(@"C:\logs\intelitroco.log");
-			logger.Log(LevelType.info, CategoryType.request, request);
+			Log.Save(LevelType.info, CategoryType.request, request);
 
 			try {
 				// Verifica se todos os parâmetros recebidos são válidos.
 				if (request.IsValid == false) {
 					calculateResponse.ReportList = request.ValidationReportList;
+					//goto Exit;
 					return calculateResponse;
 				}
 
 				long changeAmount = request.PaymentAmount - request.ProductAmount;
-				Dictionary<string,Dictionary<int,long>> monetaryUnities = CountMonetaryUnities(changeAmount);
+				Dictionary<string, Dictionary<int, long>> monetaryUnities = CountMonetaryUnities(changeAmount);
 
 				long actualChangeAmount = monetaryUnities.Sum(n => n.Value.Sum(x => x.Key * x.Value));
 				long remainingChangeAmount = changeAmount - actualChangeAmount;
 
 				if (remainingChangeAmount > 0) {
-					calculateResponse.Success = false;					
+					calculateResponse.Success = false;
 					calculateResponse.ReportList.Add(new Report { Code = -300, Message = "O troco não pode ser calculado, pois não há unidades monetárias disponíveis." });
 				}
 				else {
@@ -59,9 +60,13 @@ namespace InteliTroco.Core {
 			catch (Exception ex) {
 				calculateResponse.Success = false;
 				calculateResponse.ReportList.Add(new Report { Code = -500, Message = "O troco não pode ser calculado, tente de novo" });
-				logger.Log(LevelType.error, CategoryType.exception, ex.ToString());
+				Log.Save(LevelType.error, CategoryType.exception, ex.ToString());
 			}
-			logger.Log(LevelType.info, CategoryType.response, calculateResponse);
+			finally {
+				//Exit:
+				Log.Save(LevelType.info, CategoryType.response, calculateResponse);
+			}
+
 			return calculateResponse;
 		}
 
@@ -89,11 +94,9 @@ namespace InteliTroco.Core {
 				if (amount <= 0) {
 					break;
 				}
-
 			}
 
 			return result;
 		}
-
-	}
+	}	
 }

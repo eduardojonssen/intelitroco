@@ -57,6 +57,7 @@
     <Compile Include="Logger\FileLogger.cs" />
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\LevelType.cs" />
+    <Compile Include="Logger\LogManager.cs" />
     <Compile Include="MonetaryUnit.cs" />
     <Compile Include="DataContracts\Report.cs" />
     <Compile Include="InteliTrocoManager.cs" />
